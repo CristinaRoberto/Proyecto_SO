@@ -25,8 +25,8 @@ Lista de conectados
 ```
  Añadir threads al cliente
 
-  Manager: 
-  Verificador: 
-  Comunicador: 
+  Manager: Julen Sayago
+  Verificador: Cristina Roberto
+  Comunicador: David Sola
  ```
   [Video Version 2]()
