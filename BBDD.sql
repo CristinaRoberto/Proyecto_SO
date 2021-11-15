@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS juego;
-CREATE DATABASE juego;
-USE juego;
+DROP DATABASE IF EXISTS M10juego;
+CREATE DATABASE M10juego;
+USE M10juego;
 CREATE TABLE jugadores (
 	nombre VARCHAR(20) PRIMARY KEY NOT NULL,
 	contraseña INTEGER NOT NULL
@@ -8,7 +8,7 @@ CREATE TABLE jugadores (
 
 CREATE TABLE partidas (
 	ID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	fecha_hora TEXT NOT NULL,
+	fecha_hora DATETIME NOT NULL,
 	duracion INTEGER NOT NULL,
 	ganador TEXT NOT NULL
 )ENGINE = InnoDB;
@@ -27,8 +27,8 @@ INSERT INTO jugadores VALUES('julen', 1234);
 INSERT INTO jugadores VALUES('david', 4321);
 INSERT INTO jugadores VALUES('cristina', 5678);
 
-INSERT INTO partidas VALUES(1,'2021-09-30',37,'julen');
-INSERT INTO partidas VALUES(2,'2021-09-30',44,'david');
+INSERT INTO partidas VALUES(1,'2021-09-30 18:00:00',37,'julen');
+INSERT INTO partidas VALUES(2,'2021-10-05 21:00:00',44,'david');
 INSERT INTO partidas VALUES(3,'2021-10-07 05:00:00',36,'cristina');
 INSERT INTO partidas VALUES(4,'2021-10-10 09:00:00',38,'julen');
 INSERT INTO partidas VALUES(5,'2021-10-15 20:32:00',52,'cristina');

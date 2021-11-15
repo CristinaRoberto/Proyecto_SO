@@ -10,6 +10,7 @@
 
 typedef struct {
 	char nombre[20];
+	int socket;
 	
 }Conectado;
 
@@ -18,13 +19,13 @@ typedef struct {
 	int num;
 }ListaConectados;
 
-int Pon (ListaConectados *lista, char nombre[20])
+int Pon (ListaConectados *lista, char nombre[20],int socket)
 {
 	if(lista->num == 100)
 		return -1;
 	else{
 		strcpy(lista->conectados[lista->num].nombre, nombre);
-		
+		lista->conectados[lista->num].socket = socket;		
 		lista->num++;
 		return 0;
 		
@@ -63,6 +64,7 @@ int Eliminar(ListaConectados *lista,char nombre[20])
 		{
 			lista->conectados[i] = lista->conectados[i+1];
 			strcpy(lista->conectados[i].nombre, lista->conectados[i+1].nombre);
+			lista->conectados[i].socket = lista->conectados[i+1].socket;
 			
 		}
 		lista->num--;
@@ -72,11 +74,11 @@ int Eliminar(ListaConectados *lista,char nombre[20])
 	
 }
 void DameConectados (ListaConectados *lista, char conectados[300]) {
-	sprintf(conectados,"%d",lista->num);
+	//sprintf(conectados,"%d",lista->num);
 	int i;
 	for(i=0;i<lista->num;i++)
 	{
-		sprintf(conectados,"%s/%s", conectados, lista->conectados[i].nombre);
+		sprintf(conectados,"%s-%s", conectados, lista->conectados[i].nombre);
 	}
 	
 }
@@ -84,8 +86,8 @@ void DameConectados (ListaConectados *lista, char conectados[300]) {
 ListaConectados milista;
 
 
-
-
+int i;
+int sockets[100];
 
 void *AtenderCliente (void *socket)
 {
@@ -98,6 +100,7 @@ void *AtenderCliente (void *socket)
 	char buff2[512];
 	char buff3[512];
 	int ret;
+	
 	
 	int terminar = 0;
 	while(terminar==0){
@@ -121,11 +124,13 @@ void *AtenderCliente (void *socket)
 			char nombre[20];
 			strcpy(nombre,p);
 			Eliminar(&milista,nombre);
+			sprintf(buff2,"%s","7/i");
+			write (sock_conn,buff2, strlen(buff2));
 		}
 		if (codigo == 6){
 			
 			DameConectados(&milista,buff2);
-			write (sock_conn,buff2, strlen(buff2));
+			//write (sock_conn,buff2, strlen(buff2));
 		}
 		if((codigo == 1) ||(codigo == 2)){
 			p = strtok( NULL, "/");
@@ -161,7 +166,7 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
@@ -185,7 +190,7 @@ void *AtenderCliente (void *socket)
 				if (row == NULL){
 					
 					printf ("No se han obtenido datos en la consulta\n");
-					strcpy(buff2,"NO,");
+					strcpy(buff2,"1/NO,");
 					write (sock_conn,buff2, strlen(buff2));
 					
 				}
@@ -200,11 +205,13 @@ void *AtenderCliente (void *socket)
 						
 						
 					}
-					strcpy(buff2,"SI,");
-					Pon(&milista,nombre);
+					strcpy(buff2,"1/SI,");
+					Pon(&milista,nombre,sock_conn);
 					write (sock_conn,buff2, strlen(buff2));
+					printf("%s",buff2);
 					
 				}
+				
 				
 				
 				
@@ -237,7 +244,7 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
@@ -263,13 +270,13 @@ void *AtenderCliente (void *socket)
 					
 					mysql_query (conn, consulta2);
 					printf ("Registrado\n");
-					strcpy(buff2,"SI,");
+					strcpy(buff2,"2/SI,");
 					write (sock_conn,buff2, strlen(buff2));
 					
 				}
 				else{
 					
-					strcpy(buff2,"NO,");
+					strcpy(buff2,"2/NO,");
 					write (sock_conn,buff2, strlen(buff2));
 				}
 				
@@ -305,7 +312,7 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
@@ -338,14 +345,14 @@ void *AtenderCliente (void *socket)
 				
 				if (row == NULL){
 					printf ("No se han obtenido datos en la consulta\n");
-					strcpy(buff2,"NO,");
+					strcpy(buff2,"4/NO,");
 					write (sock_conn,buff2, strlen(buff2));
 				}
 				else{
 					// El resultado debe ser una matriz con una sola fila
 					// y una columna que contiene el nombre
 					printf ("La suma total de puntos es: %s\n", row[0] );
-					sprintf(buff2,"%s",row[0]);
+					sprintf(buff2,"4/%s",row[0]);
 					write (sock_conn,buff2, strlen(buff2));
 					mysql_close (conn);
 					
@@ -380,7 +387,7 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
@@ -427,7 +434,7 @@ void *AtenderCliente (void *socket)
 						row = mysql_fetch_row (resultado);
 					}
 					printf("La salida definitiva es:%s\n",salida);
-					sprintf(buff3,"%s",salida);
+					sprintf(buff3,"5/%s",salida);
 					printf("Envio la siguiente respuesta:%s\n",buff3);
 					write (sock_conn,buff3, strlen(buff3));
 					
@@ -466,7 +473,7 @@ void *AtenderCliente (void *socket)
 				exit (1);
 			}
 			//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-			conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego", 0, NULL,0);
+			conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M10juego", 0, NULL,0);
 			if (conn==NULL)
 			{
 				printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
@@ -512,7 +519,7 @@ void *AtenderCliente (void *socket)
 					
 					row = mysql_fetch_row (resultado);
 				}
-				sprintf(buff2,"%s",salida);
+				sprintf(buff2,"3/%s",salida);
 				write (sock_conn,buff2, strlen(buff2));
 			}
 			// cerrar la conexion con el servidor MYSQL
@@ -520,6 +527,24 @@ void *AtenderCliente (void *socket)
 			//exit(0);
 			
 			
+		}
+		if (codigo!=0)
+		{
+			char notificacion[300];
+			
+			
+			DameConectados(&milista,notificacion);
+			int j;
+			char aux1[300];
+			sprintf(aux1,"6/%s",notificacion);
+			
+			for(j=0;j< i;j++){
+				write (sockets[j],aux1, strlen(aux1));
+			}
+			sprintf(aux1,"%s","");
+			sprintf(notificacion,"%s","");
+					
+					
 		}
 	}
 	close(sock_conn);
@@ -547,7 +572,7 @@ int main(int argc, char *argv[])
 	//htonl formatea el numero que recibe al formato necesario
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
 	// escucharemos en el port 9050
-	serv_adr.sin_port = htons(9000);
+	serv_adr.sin_port = htons(50030);
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0)
 		printf ("Error al bind");
 	//La cola de peticiones pendientes no podr? ser superior a 4
@@ -561,12 +586,12 @@ int main(int argc, char *argv[])
 	
 	
 	
-	int i;
-	int sockets[100];
+	
+	
 	pthread_t thread[100];
+	int terminar2 = 0;
 	
-	
-    for(i=0;i<2000;i++){
+    for(i=0;terminar2 == 0;i++){
 	printf ("Escuchando\n");
 	
 	sock_conn = accept(sock_listen, NULL, NULL);
