@@ -29,4 +29,4 @@ Lista de conectados
   Verificador: Cristina Roberto 
   Comunicador: David Sola
  ```
-  [Video Version 2](https://youtu.be/xPPbe59pWVg)
+  [Video Version 3](https://www.youtube.com/watch?v=xPPbe59pWVg)
