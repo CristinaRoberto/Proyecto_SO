@@ -46,19 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\unico\Entrar.cs">
+    <Compile Include="Entrar.cs">
       <SubType>Form</SubType>
-      <Link>Entrar.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\unico\Entrar.Designer.cs">
+    <Compile Include="Entrar.Designer.cs">
       <DependentUpon>Entrar.cs</DependentUpon>
-      <Link>Entrar.Designer.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="..\..\..\unico\Entrar.resx">
+    <EmbeddedResource Include="Entrar.resx">
       <DependentUpon>Entrar.cs</DependentUpon>
-      <Link>Entrar.resx</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
