@@ -35,8 +35,8 @@ Lista de conectados
 ```
  Añadir la posibilidad de invitar a amigos a jugar y que estos acepten o no
 
-  Manager: 
-  Verificador: 
-  Comunicador: 
+  Manager: David Sola 
+  Verificador: Cristina Roberto
+  Comunicador: Julen Sayago
  ```
   [Video Version 4]()
