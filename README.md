@@ -30,3 +30,13 @@ Lista de conectados
   Comunicador: David Sola
  ```
   [Video Version 3](https://www.youtube.com/watch?v=xPPbe59pWVg)
+  
+  ###### VERSION 4
+```
+ Añadir la posibilidad de invitar a amigos a jugar y que estos acepten o no
+
+  Manager: 
+  Verificador: 
+  Comunicador: David Sola
+ ```
+  [Video Version 4]()
