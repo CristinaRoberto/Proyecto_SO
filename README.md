@@ -37,6 +37,6 @@ Lista de conectados
 
   Manager: 
   Verificador: 
-  Comunicador: David Sola
+  Comunicador: 
  ```
   [Video Version 4]()
