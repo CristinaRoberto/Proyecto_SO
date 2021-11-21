@@ -46,43 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Consultas2.cs">
+    <Compile Include="..\..\..\unico\Entrar.cs">
       <SubType>Form</SubType>
+      <Link>Entrar.cs</Link>
     </Compile>
-    <Compile Include="Consultas2.Designer.cs">
-      <DependentUpon>Consultas2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Entrar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Entrar.Designer.cs">
+    <Compile Include="..\..\..\unico\Entrar.Designer.cs">
       <DependentUpon>Entrar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Consultas.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Consultas.Designer.cs">
-      <DependentUpon>Consultas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Registro.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Registro.Designer.cs">
-      <DependentUpon>Registro.cs</DependentUpon>
+      <Link>Entrar.Designer.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Consultas.resx">
-      <DependentUpon>Consultas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Consultas2.resx">
-      <DependentUpon>Consultas2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Entrar.resx">
+    <EmbeddedResource Include="..\..\..\unico\Entrar.resx">
       <DependentUpon>Entrar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Registro.resx">
-      <DependentUpon>Registro.cs</DependentUpon>
+      <Link>Entrar.resx</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

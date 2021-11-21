@@ -10,28 +10,50 @@
 
 typedef struct {
 	char nombre[20];
-	
+	int socket;
+	int conectado;
 }Conectado;
 
 typedef struct {
 	Conectado conectados[100];
 	int num;
+	int current;
 }ListaConectados;
 
-int Pon (ListaConectados *lista, char nombre[20])
+typedef struct {
+	Conectado conectados[4];
+	int num;
+	int current;
+	int status;
+}Partida;
+
+typedef struct {
+	Partida partidas[100];
+	int num;
+	int totales;
+}ListaPartidas;
+
+
+ListaConectados milista;
+ListaPartidas lpartidas;
+
+int i;
+int sockets[100];
+
+
+int Pon (ListaConectados *lista, char nombre[20],int socket)
 {
 	if(lista->num == 100)
 		return -1;
 	else{
 		strcpy(lista->conectados[lista->num].nombre, nombre);
-		
+		lista->conectados[lista->num].socket = socket;		
 		lista->num++;
 		return 0;
-		
-	}
-	
-	
+	}	
 }
+
+
 int DamePosicion (ListaConectados *lista, char nombre[20]){
 	int i = 0;
 	int encontrado = 0;
@@ -43,14 +65,14 @@ int DamePosicion (ListaConectados *lista, char nombre[20]){
 		if ( !encontrado){
 			
 			i=i+1;
-		}
-		
+		}	
 	}
 	if (encontrado)
 		return i;
 	else
 		return -1;
 }
+
 
 int Eliminar(ListaConectados *lista,char nombre[20])
 {
@@ -63,28 +85,41 @@ int Eliminar(ListaConectados *lista,char nombre[20])
 		{
 			lista->conectados[i] = lista->conectados[i+1];
 			strcpy(lista->conectados[i].nombre, lista->conectados[i+1].nombre);
-			
+			lista->conectados[i].socket = lista->conectados[i+1].socket;
 		}
 		lista->num--;
 		return 0;
-	}
-	
-	
+	}	
 }
+
+
 void DameConectados (ListaConectados *lista, char conectados[300]) {
-	sprintf(conectados,"%d",lista->num);
+	//sprintf(conectados,"%d",lista->num);
 	int i;
 	for(i=0;i<lista->num;i++)
 	{
-		sprintf(conectados,"%s/%s", conectados, lista->conectados[i].nombre);
-	}
-	
+		sprintf(conectados,"%s-%s", conectados, lista->conectados[i].nombre);
+	}	
 }
 
-ListaConectados milista;
 
 
-
+int DameSocket (ListaConectados *lista, char nombre [20])
+{ //Devuelve el socket o -1 si no esta en la lista
+	int i = 0;
+	int encontrado =0;
+	while ((i<lista->num)&&(encontrado == 0))
+	{
+		if (strcmp(lista->conectados[i].nombre, nombre) == 0)
+		{
+			encontrado = 1;
+			return lista->conectados[i].socket;
+		}
+		i++;
+	}
+	if (!encontrado)
+		return -1;
+}
 
 
 void *AtenderCliente (void *socket)
@@ -98,6 +133,7 @@ void *AtenderCliente (void *socket)
 	char buff2[512];
 	char buff3[512];
 	int ret;
+	
 	
 	int terminar = 0;
 	while(terminar==0){
@@ -116,28 +152,33 @@ void *AtenderCliente (void *socket)
 		
 		char *p = strtok( buff, "/");
 		int codigo =  atoi (p);
+		char nombre[20];
+		char us[20];
 		if (codigo == 7){
 			p = strtok( NULL, "/");
 			char nombre[20];
 			strcpy(nombre,p);
 			Eliminar(&milista,nombre);
-		}
-		if (codigo == 6){
-			
-			DameConectados(&milista,buff2);
+			sprintf(buff2,"%s","7/i");
 			write (sock_conn,buff2, strlen(buff2));
 		}
+
+		if (codigo == 6){
+			DameConectados(&milista,buff2);
+			//write (sock_conn,buff2, strlen(buff2));
+		}
+
 		if((codigo == 1) ||(codigo == 2)){
 			p = strtok( NULL, "/");
 			char nombre[20];
 			strcpy (nombre, p);
+			strcpy (us, nombre);
 			p = strtok( NULL, "/");
 			char contrasena[20];
 			strcpy(contrasena,p);
+			printf ("Codigo: %d, Nombre: %s, ContraseÃ±a: %s\n", codigo, nombre, contrasena);
 			
-			printf ("Codigo: %d, Nombre: %s, Contraseña: %s\n", codigo, nombre, contrasena);
-			
-			if (codigo == 1)//Codigo de acceso
+			if (codigo == 1) //CODIGO DE ACCESO
 			{
 				printf("hola");
 				MYSQL *conn;
@@ -161,14 +202,14 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "localhost","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
 					
 					exit (1);
 				}	
-				sprintf (consulta2,"SELECT nombre FROM jugadores WHERE nombre ='%s' and contraseña = '%s' ",nombre,contrasena);
+				sprintf (consulta2,"SELECT nombre FROM jugadores WHERE nombre ='%s' and contraseÃ±a = '%s' ",nombre,contrasena);
 				
 				err=mysql_query (conn, consulta2);
 				if (err!=0) {
@@ -185,37 +226,31 @@ void *AtenderCliente (void *socket)
 				if (row == NULL){
 					
 					printf ("No se han obtenido datos en la consulta\n");
-					strcpy(buff2,"NO,");
+					strcpy(buff2,"1/NO,");
 					write (sock_conn,buff2, strlen(buff2));
 					
 				}
 				else{
 					while(row!=NULL){
-						
 						// El resultado debe ser una matriz con una sola fila
 						// y una columna que contiene el nombre
 						//printf ("El ganador es: %s\n", row[3] );
 						printf ("El usuario es %s\n", row[0]);
-						row = mysql_fetch_row (resultado);
-						
-						
+						row = mysql_fetch_row (resultado);	
 					}
-					strcpy(buff2,"SI,");
-					Pon(&milista,nombre);
+
+					strcpy(buff2,"1/SI,");
+					Pon(&milista,nombre,sock_conn);
 					write (sock_conn,buff2, strlen(buff2));
-					
-				}
-				
-				
-				
+					printf("%s",buff2);	
+				}	
 			}	
 			
 			//sprintf (buff2,"%d,",strlen (nombre));
 			
 			
-			
-			else if(codigo == 2){
-				// Código de registro
+			else if(codigo == 2) //CODIGO DE REGISTRO
+			{
 				MYSQL *conn;
 				int err;
 				
@@ -237,14 +272,14 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "localhost","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
 					
 					exit (1);
 				}	
-				sprintf (consulta1,"SELECT nombre FROM jugadores WHERE nombre ='%s' and contraseña = '%s' ",nombre,contrasena);
+				sprintf (consulta1,"SELECT nombre FROM jugadores WHERE nombre ='%s' and contraseÃ±a = '%s' ",nombre,contrasena);
 				sprintf (consulta2,"INSERT INTO jugadores values('%s','%s') ",nombre,contrasena);
 				
 				err=mysql_query (conn, consulta1);
@@ -263,28 +298,24 @@ void *AtenderCliente (void *socket)
 					
 					mysql_query (conn, consulta2);
 					printf ("Registrado\n");
-					strcpy(buff2,"SI,");
-					write (sock_conn,buff2, strlen(buff2));
-					
+					strcpy(buff2,"2/SI,");
+					write (sock_conn,buff2, strlen(buff2));	
 				}
 				else{
-					
-					strcpy(buff2,"NO,");
+					strcpy(buff2,"2/NO,");
 					write (sock_conn,buff2, strlen(buff2));
 				}
-				
-				
-				
 			}	
 		}
+
+
 		else if((codigo == 4) || (codigo ==5)){
 			p = strtok( NULL, "/");
 			char nombre[20];
 			strcpy (nombre, p);
 			
 			
-			
-			if (codigo == 4)
+			if (codigo == 4) //CODIGO CONSULTA PUNTOS TOTALES JUGADOR
 			{
 				printf("%s",buff);
 				MYSQL *conn;
@@ -305,7 +336,7 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "localhost","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
@@ -338,29 +369,22 @@ void *AtenderCliente (void *socket)
 				
 				if (row == NULL){
 					printf ("No se han obtenido datos en la consulta\n");
-					strcpy(buff2,"NO,");
+					strcpy(buff2,"4/NO,");
 					write (sock_conn,buff2, strlen(buff2));
 				}
 				else{
 					// El resultado debe ser una matriz con una sola fila
 					// y una columna que contiene el nombre
 					printf ("La suma total de puntos es: %s\n", row[0] );
-					sprintf(buff2,"%s",row[0]);
+					sprintf(buff2,"4/%s",row[0]);
 					write (sock_conn,buff2, strlen(buff2));
-					mysql_close (conn);
-					
-					
+					mysql_close (conn);	
 				}
-				
-				
 				// cerrar la conexion con el servidor MYSQL
-				
-				
-				
 			}
 			
 			
-			else if (codigo == 5)
+			else if (codigo == 5) //CODIGO CONSULTA FECHA PARTIDAS DE UN JUGADOR
 			{
 				MYSQL *conn;
 				int err;
@@ -380,7 +404,7 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "localhost","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
@@ -427,7 +451,7 @@ void *AtenderCliente (void *socket)
 						row = mysql_fetch_row (resultado);
 					}
 					printf("La salida definitiva es:%s\n",salida);
-					sprintf(buff3,"%s",salida);
+					sprintf(buff3,"5/%s",salida);
 					printf("Envio la siguiente respuesta:%s\n",buff3);
 					write (sock_conn,buff3, strlen(buff3));
 					
@@ -440,7 +464,7 @@ void *AtenderCliente (void *socket)
 				
 			}
 		}
-		else if (codigo == 3)
+		else if (codigo == 3) //CODIGO CONSULTA GANADOR PARTIDA SEGUN FECHA
 		{
 			p = strtok( NULL, "/");
 			char fechayhora[60];
@@ -466,7 +490,9 @@ void *AtenderCliente (void *socket)
 				exit (1);
 			}
 			//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-			conn = mysql_real_connect (conn, "localhost","root", "mysql", "juego", 0, NULL,0);
+			
+				conn = mysql_real_connect (conn, "localhost","root", "mysql", "M10juego", 0, NULL,0);
+			
 			if (conn==NULL)
 			{
 				printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
@@ -512,7 +538,7 @@ void *AtenderCliente (void *socket)
 					
 					row = mysql_fetch_row (resultado);
 				}
-				sprintf(buff2,"%s",salida);
+				sprintf(buff2,"3/%s",salida);
 				write (sock_conn,buff2, strlen(buff2));
 			}
 			// cerrar la conexion con el servidor MYSQL
@@ -520,6 +546,69 @@ void *AtenderCliente (void *socket)
 			//exit(0);
 			
 			
+		}
+
+
+		else if (codigo == 9)
+			// cuando el cliente invita a otra persona
+		{
+			char invitado [20];
+			p = strtok( NULL, "/");
+			strcpy (invitado, p);
+			int socket_invitado;
+			socket_invitado = DameSocket(&milista,invitado);
+			printf ("Voy a invitar a %d, %s \n", socket_invitado, invitado);
+			strcpy(buff2,"");
+			printf("Estamos listos %s  \n", buff2);
+			sprintf (buff2,"9/%s",us);
+			
+			printf("Estamos listos2 %s  \n", buff2);
+			write (socket_invitado,buff2, strlen(buff2));
+			//printf("estem aqui 3 %s\n",respuesta);
+			strcpy(buff2,"");
+			
+		}
+		else if (codigo == 8)
+			// cuando invitan al cliente
+		{
+			char nombre1[20];
+			p = strtok(NULL,"/");
+			char invitador [20];
+			//p = strtok( NULL, "/");
+			strcpy (invitador, p);
+			p = strtok( NULL, "/");
+			char eleccion[10];
+			strcpy(eleccion,p);
+			
+			int socket_invitador;
+			socket_invitador = DameSocket(&milista,invitador);
+			
+			sprintf (buff2,"8/%s",eleccion);
+			
+			write (socket_invitador,buff2, strlen(buff2));
+			printf("%s\n",buff2);
+			strcpy(buff2,"");
+		}
+		
+
+
+		if (codigo!=0)
+		{
+			char notificacion[300];
+			
+			
+			DameConectados(&milista,notificacion);
+			int j;
+			char aux1[300];
+			sprintf(aux1,"6/%s",notificacion);
+			
+			for(j=0;j< i;j++){
+				write (sockets[j],aux1, strlen(aux1));
+			}
+			sprintf(aux1,"%s","");
+			sprintf(notificacion,"%s","");
+					
+					
 		}
 	}
 	close(sock_conn);
@@ -561,12 +650,12 @@ int main(int argc, char *argv[])
 	
 	
 	
-	int i;
-	int sockets[100];
+	
+	
 	pthread_t thread[100];
+	int terminar2 = 0;
 	
-	
-    for(i=0;i<2000;i++){
+    for(i=0;terminar2 == 0;i++){
 	printf ("Escuchando\n");
 	
 	sock_conn = accept(sock_listen, NULL, NULL);
@@ -581,4 +670,3 @@ int main(int argc, char *argv[])
 	//close(sock_conn); 
 	
 }
-
