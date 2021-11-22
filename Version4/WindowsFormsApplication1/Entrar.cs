@@ -16,6 +16,9 @@ namespace WindowsFormsApplication1
     {
         Socket server;
         Thread atender;
+        int numero_conectados = 0;
+        string[] conectados;
+        string invitador;
 
         public Entrar()
         {
@@ -138,7 +141,15 @@ namespace WindowsFormsApplication1
                     case 6:
             if (codigo == 6)
             {
-                label6.Text = mensaje;
+                string[] trozos2 = mensaje.Split('-');
+                Conectados.RowCount = trozos2.Length;
+                int i = 0;
+                while (i < trozos2.Length)
+                {
+                    Conectados[0, i].Value = trozos2[i];
+                    i++;
+                   
+                }
             }
             break;
                     case 7:
@@ -161,6 +172,26 @@ namespace WindowsFormsApplication1
                 button1.Show();
             }
             break;
+                    case 8:
+            if (codigo == 8)
+            {
+                int not = Convert.ToInt32(mensaje);
+                if (not == 0)
+                {
+                    MessageBox.Show("Han rechazado tu invitación");
+                }
+                else
+                    MessageBox.Show("invitacion aceptada");
+            }
+            break;
+
+                    case 9:
+            if (codigo == 9)
+            {
+                label6.Text = mensaje + "te ha invitado";
+                invitador = mensaje;
+            }
+            break;
 
 
 
@@ -177,8 +208,8 @@ namespace WindowsFormsApplication1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            IPAddress direc = IPAddress.Parse("147.83.117.22");//192.168.56.102
-            IPEndPoint ipep = new IPEndPoint(direc, 50030);
+            IPAddress direc = IPAddress.Parse("192.168.56.102");//192.168.56.102 147.83.117.22
+            IPEndPoint ipep = new IPEndPoint(direc, 9000);
             
 
             server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -227,6 +258,7 @@ namespace WindowsFormsApplication1
 
         private void button2_Click(object sender, EventArgs e)
         {
+            invitador = textBox1.Text;
             string mensaje = "1/" + textBox1.Text + "/" + textBox2.Text + "";
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
             server.Send(msg);
@@ -375,10 +407,7 @@ namespace WindowsFormsApplication1
            
             string mensaje = "6/" ;
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-            server.Send(msg);
-
-
-          
+            server.Send(msg);    
 
           
           
@@ -388,6 +417,58 @@ namespace WindowsFormsApplication1
 
 
         }
+
+        private void Actualiza_Grid(string mensaje)
+            //actualiza lista de conectados cada vez que se conecte un usuario
+        {
+            Conectados.ColumnCount = 1;
+            Conectados.RowCount = numero_conectados;
+
+            conectados = mensaje.Split(',');
+
+            for (int i = 0; i < numero_conectados; i++)
+                Conectados.Rows[i].Cells[0].Value = conectados[i];
+        }
+
+        private void Invitacion_lbl(string mensaje)
+        {
+            this.label6.Text = mensaje + " te ha invitado";
+        }
+
+        private void Aceptar_Click(object sender, EventArgs e)
+        {
+            string mensaje = "8/" + invitador + "/1";
+            
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
+
+        private void Rechazar_Click(object sender, EventArgs e)
+        {
+            string mensaje = "8/" + invitador + "/0";
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
+
+        private void Invitar_Click(object sender, EventArgs e)
+        {
+            string mensaje = "9/" + nombre_invitado.Text;
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
+
+        private void Invitacion_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        
+        
+
+        
+
+
+       
 
 
 
