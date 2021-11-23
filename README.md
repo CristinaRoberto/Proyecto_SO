@@ -39,4 +39,4 @@ Lista de conectados
   Verificador: Cristina Roberto
   Comunicador: Julen Sayago
  ```
-  [Video Version 4](https://youtu.be/EaiasPm_mq8)
+  [Video Version 4](https://www.youtube.com/watch?v=EaiasPm_mq8)
