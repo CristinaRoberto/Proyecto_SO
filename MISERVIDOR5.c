@@ -8,6 +8,8 @@
 #include <mysql.h>
 #include <pthread.h>
 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 typedef struct {
 	char nombre[20];
 	int socket;
@@ -99,7 +101,8 @@ void DameConectados (ListaConectados *lista, char conectados[300]) {
 	for(i=0;i<lista->num;i++)
 	{
 		sprintf(conectados,"%s-%s", conectados, lista->conectados[i].nombre);
-	}	
+	}
+	
 }
 
 
@@ -176,7 +179,7 @@ void *AtenderCliente (void *socket)
 			p = strtok( NULL, "/");
 			char contrasena[20];
 			strcpy(contrasena,p);
-			printf ("Codigo: %d, Nombre: %s, ContraseÃ±a: %s\n", codigo, nombre, contrasena);
+			printf ("Codigo: %d, Nombre: %s, Contraseña: %s\n", codigo, nombre, contrasena);
 			
 			if (codigo == 1) //CODIGO DE ACCESO
 			{
@@ -202,14 +205,14 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "M10juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
 					
 					exit (1);
 				}	
-				sprintf (consulta2,"SELECT nombre FROM jugadores WHERE nombre ='%s' and contraseÃ±a = '%s' ",nombre,contrasena);
+				sprintf (consulta2,"SELECT nombre FROM jugadores WHERE nombre ='%s' and contraseña = '%s' ",nombre,contrasena);
 				
 				err=mysql_query (conn, consulta2);
 				if (err!=0) {
@@ -272,14 +275,14 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "M10juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
 					
 					exit (1);
 				}	
-				sprintf (consulta1,"SELECT nombre FROM jugadores WHERE nombre ='%s' and contraseÃ±a = '%s' ",nombre,contrasena);
+				sprintf (consulta1,"SELECT nombre FROM jugadores WHERE nombre ='%s' and contraseña = '%s' ",nombre,contrasena);
 				sprintf (consulta2,"INSERT INTO jugadores values('%s','%s') ",nombre,contrasena);
 				
 				err=mysql_query (conn, consulta1);
@@ -326,7 +329,7 @@ void *AtenderCliente (void *socket)
 				MYSQL_ROW row;
 				//char nombre[20];
 				int ID;
-				char consulta4 [80];
+				char consulta4 [500];
 				//Creamos una conexion al servidor MYSQL
 				conn = mysql_init(NULL);
 				if (conn==NULL) 
@@ -336,7 +339,7 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "M10juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
@@ -394,7 +397,7 @@ void *AtenderCliente (void *socket)
 				MYSQL_ROW row;
 				
 				int ID;
-				char consulta5 [80];
+				char consulta5 [500];
 				//Creamos una conexion al servidor MYSQL
 				conn = mysql_init(NULL);
 				if (conn==NULL) 
@@ -404,7 +407,7 @@ void *AtenderCliente (void *socket)
 					exit (1);
 				}
 				//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "M10juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M10juego", 0, NULL,0);
 				if (conn==NULL)
 				{
 					printf ("Error al inicializar la conexion: %u %s\n", mysql_errno(conn), mysql_error(conn));
@@ -417,9 +420,7 @@ void *AtenderCliente (void *socket)
 				// dado por el usuario
 				
 				// construimos la consulta SQL
-				strcpy (consulta5,"SELECT partidas.fecha_hora FROM jugadores,partidas WHERE jugadores.nombre = '");
-				strcat (consulta5, nombre);
-				strcat (consulta5, "'AND jugadores.nombre = partidas.ganador");
+				sprintf(consulta5,"SELECT partidas.fecha_hora FROM jugadores,partidas WHERE jugadores.nombre = '%s' AND jugadores.nombre = partidas.ganador", nombre);
 				
 				// hacemos la consulta
 				err=mysql_query (conn, consulta5);
@@ -491,7 +492,7 @@ void *AtenderCliente (void *socket)
 			}
 			//inicializar la conexion, indicando nuestras claves de acceso al servidor de BBDD
 			
-				conn = mysql_real_connect (conn, "localhost","root", "mysql", "M10juego", 0, NULL,0);
+				conn = mysql_real_connect (conn, "shiva2.upc.es","root", "mysql", "M10juego", 0, NULL,0);
 			
 			if (conn==NULL)
 			{
@@ -589,6 +590,21 @@ void *AtenderCliente (void *socket)
 			printf("%s\n",buff2);
 			strcpy(buff2,"");
 		}
+		else if (codigo == 10) //chat
+		{
+			p = strtok( NULL, "/");
+			char mensaje[200];
+			strcpy(mensaje, p);
+			sprintf(buff2,"10/%s: %s",us,mensaje);
+			pthread_mutex_lock( &mutex);
+			for (i=0; i<milista.num; i++)
+			{ 
+			 write (milista.conectados[i].socket,buff2, strlen (buff2));
+				}
+			pthread_mutex_unlock( &mutex);
+			strcpy(buff2,"");
+
+		} 
 		
 
 
@@ -636,7 +652,7 @@ int main(int argc, char *argv[])
 	//htonl formatea el numero que recibe al formato necesario
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
 	// escucharemos en el port 9050
-	serv_adr.sin_port = htons(9000);
+	serv_adr.sin_port = htons(50030);
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0)
 		printf ("Error al bind");
 	//La cola de peticiones pendientes no podr? ser superior a 4
@@ -670,3 +686,4 @@ int main(int argc, char *argv[])
 	//close(sock_conn); 
 	
 }
+
