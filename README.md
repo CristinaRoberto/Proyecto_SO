@@ -43,7 +43,7 @@ Lista de conectados
   
    ###### VERSION 5
 ```
- 
+  Añadir la protección cross-threading y implementar un chat para que los jugadores se puedan comunicar.
 
   Manager: 
   Verificador: 
