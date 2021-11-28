@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +10,8 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Microsoft.VisualBasic;
+using System.Diagnostics;
 
 namespace WindowsFormsApplication1
 {
@@ -16,7 +19,19 @@ namespace WindowsFormsApplication1
     {
         Socket server;
         Thread atender;
+        int numero_conectados = 0;
+        string[] conectados;
+        string invitador;
 
+
+        //Delegados para realizar acciones
+        delegate void DelegadoParaEscribir(string mensaje);
+        delegate void DelegadoParaActualizar(string mensaje);
+        delegate void DelegadoParaEscribirAlChat(string mensaje);
+        delegate void DelegadoParaConectar();
+        delegate void DelegadoParaDesconectar();
+        delegate void DelegadoParaEliminarCuenta();
+        
         public Entrar()
         {
             InitializeComponent();
@@ -34,11 +49,18 @@ namespace WindowsFormsApplication1
             {
                 byte[] msg2 = new byte[80];
                 server.Receive(msg2);
-                string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
+                string mensaje1 = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+                string[] trozos = mensaje1.Split('/');
+               
                 
-                int codigo = Convert.ToInt32(trozos[0]);
+
+                    int codigo = Convert.ToInt32(trozos[0]);
+                    string mensaje = trozos[1].Split('\0')[0];
                 
-                string mensaje = trozos[1].Split('\0')[0]; 
+               
+                
+               
 
                 switch (codigo)
                 {
@@ -138,7 +160,16 @@ namespace WindowsFormsApplication1
                     case 6:
             if (codigo == 6)
             {
-                label6.Text = mensaje;
+                string[] trozos2 = mensaje.Split('-');
+                Conectados.RowCount = trozos2.Length-1;
+                Conectados.Columns[0].HeaderText = "JUGADORES";
+                int i = 1;
+                while (i < trozos2.Length)
+                {
+                    Conectados[0, i-1].Value = trozos2[i];
+                    i++;
+                   
+                }
             }
             break;
                     case 7:
@@ -161,13 +192,34 @@ namespace WindowsFormsApplication1
                 button1.Show();
             }
             break;
+                    case 8:
+            if (codigo == 8)
+            {
+                int not = Convert.ToInt32(mensaje);
+                if (not == 0)
+                {
+                    MessageBox.Show("Han rechazado tu invitación");
+                }
+                else
+                    MessageBox.Show("invitacion aceptada");
+            }
+            break;
 
+                    case 9:
+            if (codigo == 9)
+            {
+                label6.Text = mensaje + " te ha invitado";
+                invitador = mensaje;
+            }
+            break;
+                    
+                    case 10:
+            if (codigo == 10)
+            {
 
-
-
-
-
-                
+                listBox1.Invoke(new DelegadoParaEscribirAlChat(Chat), new object[] { mensaje });
+            }
+            break;
 
                 }
             }
@@ -177,7 +229,7 @@ namespace WindowsFormsApplication1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            IPAddress direc = IPAddress.Parse("147.83.117.22");//192.168.56.102
+            IPAddress direc = IPAddress.Parse("147.83.117.22");//192.168.56.102 147.83.117.22
             IPEndPoint ipep = new IPEndPoint(direc, 50030);
             
 
@@ -227,6 +279,7 @@ namespace WindowsFormsApplication1
 
         private void button2_Click(object sender, EventArgs e)
         {
+            invitador = textBox1.Text;
             string mensaje = "1/" + textBox1.Text + "/" + textBox2.Text + "";
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
             server.Send(msg);
@@ -313,16 +366,7 @@ namespace WindowsFormsApplication1
 
                 
 
-                if (mensaje == "NO")
-                {
-                    MessageBox.Show("No existe ningún jugador con este nombre");
-
-                }
-                else
-                {
-                    MessageBox.Show("Puntuación total del jugador:" + mensaje);
-                    
-                }
+             
 
             }
             if (radioButton3.Checked)
@@ -375,10 +419,7 @@ namespace WindowsFormsApplication1
            
             string mensaje = "6/" ;
             byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-            server.Send(msg);
-
-
-          
+            server.Send(msg);    
 
           
           
@@ -388,6 +429,85 @@ namespace WindowsFormsApplication1
 
 
         }
+        
+        // private void Actualiza_Grid(string mensaje)
+            //actualiza lista de conectados cada vez que se conecte un usuario
+        // {
+           //  Conectados.ColumnCount = 1;
+           //  Conectados.RowCount = numero_conectados;
+          //   Conectados.Columns[0].HeaderText = "\r\n conectados";
+
+          //   conectados = mensaje.Split(',');
+
+          //   for (int i = 0; i < numero_conectados; i++)
+          //       Conectados.Rows[i].Cells[0].Value = conectados[i];
+        //  }
+        
+        private void Invitacion_lbl(string mensaje)
+        {
+            this.label6.Text = mensaje + " te ha invitado";
+        }
+
+        private void Aceptar_Click(object sender, EventArgs e)
+        {
+            string mensaje = "8/" + invitador + "/1";
+            
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
+
+        private void Rechazar_Click(object sender, EventArgs e)
+        {
+            string mensaje = "8/" + invitador + "/0";
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
+
+        private void Invitar_Click(object sender, EventArgs e)
+        {
+            string mensaje = "9/" + nombre_invitado.Text;
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
+
+        private void Invitacion_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Chat(string mensaje)
+        {
+
+            this.listBox1.Items.Add(mensaje);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (textBox6.Text != null)
+                {
+                    string mensaje = "10/" + textBox6.Text;
+                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                    server.Send(msg);
+                    textBox6.Clear();                
+                }
+                else
+                {
+                    MessageBox.Show("Escribe un mensaje");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error al enviar mensaje");
+            }
+        }        
+        
+
+        
+
+
+       
 
 
 
