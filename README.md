@@ -41,7 +41,7 @@ Añadir la posibilidad de invitar a amigos a jugar y que estos acepten o no. Par
  ```
   [Video Version 4](https://www.youtube.com/watch?v=EaiasPm_mq8&ab_channel=JulenSayago)
   
-    ###### VERSION 5
+   ###### VERSION 5
 ```
 Añadir la protección cross-threading y implementar un chat para que los jugadores se puedan comunicar
 
