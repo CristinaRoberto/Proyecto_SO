@@ -49,4 +49,4 @@ Añadir la protección cross-threading y implementar un chat para que los jugado
   Verificador: David Sola
   Comunicador: Cristina Roberto
  ```
-  [Video Version 5]()
+  [Video Version 5](https://youtu.be/5AUJZEtctSc)
