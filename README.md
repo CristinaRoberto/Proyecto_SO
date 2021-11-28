@@ -29,7 +29,7 @@ Añadir threads al cliente
   Verificador: Cristina Roberto
   Comunicador: David Sola
  ```
-  [Video Version 3]()
+  [Video Version 3](https://www.youtube.com/watch?v=xPPbe59pWVg&ab_channel=DavidSol%C3%A1D%C3%ADez)
   
   ###### VERSION 4
 ```
@@ -39,7 +39,7 @@ Añadir la posibilidad de invitar a amigos a jugar y que estos acepten o no. Par
   Verificador: Cristina Roberto 
   Comunicador: Julen Sayago
  ```
-  [Video Version 4]()
+  [Video Version 4](https://www.youtube.com/watch?v=EaiasPm_mq8&ab_channel=JulenSayago)
   
     ###### VERSION 5
 ```
