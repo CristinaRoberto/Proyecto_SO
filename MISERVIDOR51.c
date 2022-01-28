@@ -14,6 +14,7 @@ typedef struct {
 	char nombre[20];
 	int socket;
 	int conectado;
+	int ID;
 }Conectado;
 
 typedef struct {
@@ -25,8 +26,8 @@ typedef struct {
 typedef struct {
 	Conectado conectados[4];
 	int num;
-	int current;
-	int status;
+	//int current;
+	//int status;
 }Partida;
 
 typedef struct {
@@ -38,6 +39,7 @@ typedef struct {
 
 ListaConectados milista;
 ListaPartidas lpartidas;
+Partida mipartida;
 
 int i;
 int sockets[100];
@@ -53,6 +55,21 @@ int Pon (ListaConectados *lista, char nombre[20],int socket)
 		lista->num++;
 		return 0;
 	}	
+}
+void Pon_en_partida(ListaConectados *lista,Partida *partida1, char nombre[20])
+{
+	
+			
+			strcpy(partida1->conectados[partida1->num].nombre,nombre);
+			partida1->conectados[partida1->num].socket=DameSocket(&milista,nombre);
+			partida1->conectados[partida1->num].ID=partida1->num;
+			partida1->num++;
+			//strcpy(listap->partidas[listap->num].conectados[listap->partidas[listap->num].num].nombre, lista->conectados[i].nombre);
+			//listap->partidas[listap->num].conectados[listap->partidas[listap->num].num].socket = lista->conectados[i].socket;
+			//listap->partidas[listap->num].num ++;
+			
+			//lista->conectados[i].socket
+	
 }
 
 
@@ -167,6 +184,7 @@ void *AtenderCliente (void *socket)
 		}
 
 		if (codigo == 6){
+			//DameConectados(&milista,buff2);
 			DameConectados(&milista,buff2);
 			//write (sock_conn,buff2, strlen(buff2));
 		}
@@ -554,14 +572,19 @@ void *AtenderCliente (void *socket)
 			// cuando el cliente invita a otra persona
 		{
 			char invitado [20];
+			char vec[100];
+			int numjugador3;
+			numjugador3 = mipartida.num + 1;
 			p = strtok( NULL, "/");
 			strcpy (invitado, p);
+			p = strtok( NULL, "/");
+			strcpy(vec,p);
 			int socket_invitado;
 			socket_invitado = DameSocket(&milista,invitado);
 			printf ("Voy a invitar a %d, %s \n", socket_invitado, invitado);
 			strcpy(buff2,"");
 			printf("Estamos listos %s  \n", buff2);
-			sprintf (buff2,"9/%s",us);
+			sprintf (buff2,"9/%s-%s-%d",us,vec,numjugador3);
 			
 			printf("Estamos listos2 %s  \n", buff2);
 			write (socket_invitado,buff2, strlen(buff2));
@@ -572,23 +595,42 @@ void *AtenderCliente (void *socket)
 		else if (codigo == 8)
 			// cuando invitan al cliente
 		{
+			int numjugador1;
 			char nombre1[20];
 			p = strtok(NULL,"/");
 			char invitador [20];
 			//p = strtok( NULL, "/");
 			strcpy (invitador, p);
 			p = strtok( NULL, "/");
-			char eleccion[10];
-			strcpy(eleccion,p);
+			char invitado1[20];
+			strcpy (invitado1, p);
+			p = strtok( NULL, "/");
+			int eleccion;
+			eleccion = atoi(p);
+			if(eleccion==1){
+				pthread_mutex_lock( &mutex);
+				Pon_en_partida(&milista,&mipartida,invitado1);
+				//numjugador1=mipartida.num;
+				//sprintf (buff2,"12/%d",numjugador1);
+				//write (sock_conn,buff2, strlen(buff2));
+				//printf("este es el id:%s",buff2);
+				strcpy(buff2,"");
+				
+				pthread_mutex_unlock( &mutex);
+
+				
+				//sprintf(buff2,"12/%d",numjugador1);
+				
+				//write (sock_conn,buff2, strlen(buff2));
+			}
 			
 			int socket_invitador;
 			socket_invitador = DameSocket(&milista,invitador);
-			
-			sprintf (buff2,"8/%s",eleccion);
-			
+			sprintf (buff2,"8/%d",eleccion);
 			write (socket_invitador,buff2, strlen(buff2));
-			printf("%s\n",buff2);
 			strcpy(buff2,"");
+			
+			
 		}
 		else if (codigo == 10) //chat
 		{
@@ -599,13 +641,104 @@ void *AtenderCliente (void *socket)
 			pthread_mutex_lock( &mutex);
 			for (i=0; i<milista.num; i++)
 			{ 
-			 write (milista.conectados[i].socket,buff2, strlen (buff2));
+				write (mipartida.conectados[i].socket,buff2, strlen (buff2));
+				//write (milista.conectados[i].socket,buff2, strlen (buff2));
 				}
 			pthread_mutex_unlock( &mutex);
 			strcpy(buff2,"");
 
 		} 
+		//else if (codigo == 11)
+		//{
+		//p = strtok( NULL, "/");
+		//char creador[100];
+		//strcpy(creador,p);
+		//Pon_en_partida(&milista,&lpartidas,creador);
+		//sprintf(buff2,"11/SI");
+		//for (i=0; i<lpartidas.num; i++)
+		//{ 
+		//	write (lpartidas.partidas.conectados[i].socket,buff2, strlen (buff2));
+		//}
+			
+		//}
+		else if (codigo == 12) 
+		{
+			p = strtok( NULL, "/");
+			char nombre2[40];
+			int numJugador;
+			strcpy(nombre2, p);
+			
+			pthread_mutex_lock( &mutex);
+			Pon_en_partida(&milista,&mipartida,nombre2);
+			printf("%s",mipartida.conectados[0].nombre);
+			pthread_mutex_unlock( &mutex);
+			numJugador = mipartida.num;
+			sprintf(buff2,"12/%d",numJugador);
+			write (sock_conn,buff2, strlen (buff2));
+			strcpy(buff2,"");
+			
+		} 
+		else if(codigo ==13){
+			p = strtok( NULL, "/");
+			int res1 = atoi(p);
+			int IDultimo;
+			if(res1 == mipartida.num){
+				IDultimo = 1;
+			}
+			else{
+			 IDultimo = atoi(p) + 1;
+			}
+			sprintf(buff2,"13/%d",IDultimo);
+			
+			for (i=0; i<milista.num; i++)
+			{ 
+				write (mipartida.conectados[i].socket,buff2, strlen (buff2));
+				//write (milista.conectados[i].socket,buff2, strlen (buff2));
+			}
+			
+		}
 		
+		
+		
+		else if (codigo == 20){
+			p = strtok( NULL, "/");
+			
+			sprintf(buff2,"20/%s",p);
+			printf("%s", p);
+			//printf("%s",atoi(p[0]));
+			for (i=0; i<mipartida.num; i++)
+			{ 
+				write (mipartida.conectados[i].socket,buff2, strlen (buff2));
+				//write (milista.conectados[i].socket,buff2, strlen (buff2));
+			}
+			strcpy(buff2,"");
+			
+			
+		}
+		else if (codigo == 21){
+			p = strtok( NULL, "/");
+			int id1;
+			int id2;
+			int Ijugador;
+			int puntos;
+			id1 = atoi(p);
+			p = strtok( NULL, "/");
+			id2 = atoi(p);
+			p = strtok( NULL, "/");
+			Ijugador=atoi(p);
+			p = strtok( NULL, "/");
+			puntos=atoi(p);
+			
+			sprintf(buff2,"21/%d,%d,%d,%d",id1,id2,Ijugador,puntos);
+			
+			for (i=0; i<milista.num; i++)
+			{ 
+				write (mipartida.conectados[i].socket,buff2, strlen (buff2));
+				
+			}
+			strcpy(buff2,"");
+			
+		}
 
 
 		if (codigo!=0)
@@ -683,6 +816,7 @@ int main(int argc, char *argv[])
 	
 		
 	}
+return 0;
 	//close(sock_conn); 
 	
 }

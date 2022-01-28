@@ -92,3 +92,15 @@ C:\Users\David\Desktop\Nueva carpeta\Version5\WindowsFormsApplication1\obj\x86\D
 C:\Users\David\Desktop\Nueva carpeta\Version5\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.Entrar.resources
 C:\Users\David\Desktop\Nueva carpeta\Version5\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\Users\David\Desktop\Nueva carpeta\Version5\WindowsFormsApplication1\obj\x86\Debug\Memory.csproj.GenerateResource.Cache
+C:\Users\David\Desktop\Nueva carpeta\Version5\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\David\Desktop\Nueva carpeta (2)\Version5.1\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.exe
+C:\Users\David\Desktop\Nueva carpeta (2)\Version5.1\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.pdb
+C:\Users\David\Desktop\Nueva carpeta (2)\Version5.1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\David\Desktop\Nueva carpeta (2)\Version5.1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\David\Desktop\Nueva carpeta (2)\Version5.1\WindowsFormsApplication1\obj\x86\Debug\Memory.csprojResolveAssemblyReference.cache
+C:\Users\David\Desktop\Nueva carpeta (2)\Version5.1\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.Entrar.resources
+C:\Users\David\Desktop\Nueva carpeta (2)\Version5.1\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\David\Desktop\Nueva carpeta (2)\Version5.1\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\David\Desktop\Nueva carpeta (2)\Version5.1\WindowsFormsApplication1\obj\x86\Debug\Memory.csproj.GenerateResource.Cache
+C:\Users\julen\Desktop\Version5.1\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.exe
+C:\Users\julen\Desktop\Version5.1\WindowsFormsApplication1\obj\x86\Debug\WindowsFormsApplication1.pdb

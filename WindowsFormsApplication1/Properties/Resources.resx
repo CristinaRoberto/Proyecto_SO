@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,103 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="60ae5c9db9f42" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\60ae5c9db9f42.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_102686779_momo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_102686779_momo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_118283916_b19c5a1f-162b-410b-8169-f58f0d153752" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_118283916_b19c5a1f-162b-410b-8169-f58f0d153752.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="2t9upglwxvv51" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\2t9upglwxvv51.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="44cc7867af9bfb899afac503b167ca5c" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\44cc7867af9bfb899afac503b167ca5c.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="97bd229a56cb3700efa90570e1293696" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\97bd229a56cb3700efa90570e1293696.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="219a854227382f6b09afe08d93851fd3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\219a854227382f6b09afe08d93851fd3.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="400de647d6dc1cd2cd941f1f3d62083018-11-gavin.rsquare.w700" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\400de647d6dc1cd2cd941f1f3d62083018-11-gavin.rsquare.w700.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="490x_meme-nina" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\490x_meme-nina.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="525c4738d0d797f865829a34d5a94af5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\525c4738d0d797f865829a34d5a94af5.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="1542384053_864693_1542384303_miniatura_normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\1542384053_864693_1542384303_miniatura_normal.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Así_han_cambiado_los_protagonistas_de_los_m_CCHiV7J" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Así_han_cambiado_los_protagonistas_de_los_m_CCHiV7J.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="C8MrCtTXoAAR003" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\C8MrCtTXoAAR003.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Chubby_Bubbles_Girl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Chubby_Bubbles_Girl.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="doge_y_cheems_1_crop1623509180858.jpg_1843181640" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\doge_y_cheems_1_crop1623509180858.jpg_1843181640.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="economia-meme" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\economia-meme.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EMVfNIUWkAE4XU0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EMVfNIUWkAE4XU0.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="f440a4de-6aef-4472-b9ab-110261d7e165_source-aspect-ratio_default_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\f440a4de-6aef-4472-b9ab-110261d7e165_source-aspect-ratio_default_0.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="gigante-noble-clash-royale" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gigante-noble-clash-royale.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="hqdefault" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\hqdefault.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="i5n858srqtq61" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\i5n858srqtq61.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="j0VLT4k4LKQ3GSfyGOFnm7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\j0VLT4k4LKQ3GSfyGOFnm7.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="maxresdefault" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\maxresdefault.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Nada" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Nada.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="original" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\original.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ponte-verga-negro" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ponte-verga-negro.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pp,504x498-pad,600x600,f8f8f8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pp,504x498-pad,600x600,f8f8f8.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sanic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sanic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="spiderman-meme-1630319444" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\spiderman-meme-1630319444.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Troll_face" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Troll_face.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WhatsApp-Image-2020-04-01-at-11.34.44-PM" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WhatsApp-Image-2020-04-01-at-11.34.44-PM.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

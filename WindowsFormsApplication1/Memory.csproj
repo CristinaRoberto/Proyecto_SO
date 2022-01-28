@@ -52,10 +52,19 @@
     <Compile Include="Entrar.Designer.cs">
       <DependentUpon>Entrar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Entrar.resx">
       <DependentUpon>Entrar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -65,6 +74,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -75,6 +85,99 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\60ae5c9db9f42.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_102686779_momo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_118283916_b19c5a1f-162b-410b-8169-f58f0d153752.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2t9upglwxvv51.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\44cc7867af9bfb899afac503b167ca5c.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\97bd229a56cb3700efa90570e1293696.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\219a854227382f6b09afe08d93851fd3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\400de647d6dc1cd2cd941f1f3d62083018-11-gavin.rsquare.w700.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\490x_meme-nina.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\525c4738d0d797f865829a34d5a94af5.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1542384053_864693_1542384303_miniatura_normal.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Así_han_cambiado_los_protagonistas_de_los_m_CCHiV7J.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\C8MrCtTXoAAR003.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Chubby_Bubbles_Girl.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\doge_y_cheems_1_crop1623509180858.jpg_1843181640.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\economia-meme.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EMVfNIUWkAE4XU0.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\f440a4de-6aef-4472-b9ab-110261d7e165_source-aspect-ratio_default_0.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gigante-noble-clash-royale.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hqdefault.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\i5n858srqtq61.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\j0VLT4k4LKQ3GSfyGOFnm7.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\maxresdefault.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Nada.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\original.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ponte-verga-negro.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pp,504x498-pad,600x600,f8f8f8.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Sanic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\spiderman-meme-1630319444.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Troll_face.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WhatsApp-Image-2020-04-01-at-11.34.44-PM.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
