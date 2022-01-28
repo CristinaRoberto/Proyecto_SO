@@ -50,3 +50,13 @@ Añadir la protección cross-threading y implementar un chat para que los jugado
   Comunicador: Cristina Roberto
  ```
   [Video Version 5](https://youtu.be/5AUJZEtctSc)
+
+ ###### VERSION FINAL
+```
+Implementación del juego: Mememory
+
+  Manager: Julen Sayago
+  Verificador: Cristina Roberto
+  Comunicador: David Sola
+ ```
+  [Video Version Final]()
