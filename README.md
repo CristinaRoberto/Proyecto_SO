@@ -57,6 +57,6 @@ Implementación del juego: Mememory
 
   Manager: Julen Sayago
   Verificador: Cristina Roberto
-  Comunicador: David Sola
+  Comunicador: David Sola, Julen Sayago y Cristina Roberto
  ```
   [Video Version Final]()
