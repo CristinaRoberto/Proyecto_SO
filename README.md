@@ -1,5 +1,5 @@
 # ProyectoSO - Grupo M10
-## MEMORY
+## MEMEMORY
 ###### VERSION 1
 ```
 Cliente-Servidor y Consultas básicas
@@ -59,4 +59,4 @@ Implementación del juego: Mememory
   Verificador: Cristina Roberto
   Comunicador: David Sola, Julen Sayago y Cristina Roberto
  ```
-  [Video Version Final]()
+  [Video Version Final](https://youtu.be/hJ8vUz9wC30)
